@@ -1,0 +1,13 @@
+{
+  "name": "JS-asynchronous",
+  "version": "1.0.0",
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "parcel-bundler": "^1.12.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  }
+}
