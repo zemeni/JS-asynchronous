@@ -70,18 +70,34 @@ const getPosts = async function (){
     console.log(data[0]);
 }
 
+const post = {
+    title:'title',
+    body:'body'
+};
+
 const createPost = async () => {
-    const post = {
-        title:'title',
-        body:'body'
-    };
     const {data} = await axios.post(BASE_URL, post);
     console.log(data);
+}
+
+const fakePosts = [];
+const deletePost = async post => {
+    let posts = fakePosts;
+    try {
+        posts.filter(p => p.id != post.id);
+        await axios.delete(BASE_URL + '/' + post.id);
+    }catch (ex){
+        posts = fakePosts;
+    }
 }
 
 createPost();
 createPost();
 createPost();
+
+getPosts();
+
+deletePost(post);
 
 getPosts();
 

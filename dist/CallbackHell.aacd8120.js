@@ -5348,27 +5348,28 @@ var getPosts = /*#__PURE__*/function () {
   };
 }();
 
+var post = {
+  title: 'title',
+  body: 'body'
+};
+
 var createPost = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var post, _yield$axios$post, data;
+    var _yield$axios$post, data;
 
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            post = {
-              title: 'title',
-              body: 'body'
-            };
-            _context2.next = 3;
+            _context2.next = 2;
             return _axios.default.post(BASE_URL, post);
 
-          case 3:
+          case 2:
             _yield$axios$post = _context2.sent;
             data = _yield$axios$post.data;
             console.log(data);
 
-          case 6:
+          case 5:
           case "end":
             return _context2.stop();
         }
@@ -5381,9 +5382,50 @@ var createPost = /*#__PURE__*/function () {
   };
 }();
 
+var fakePosts = [];
+
+var deletePost = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(post) {
+    var posts;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            posts = fakePosts;
+            _context3.prev = 1;
+            posts.filter(function (p) {
+              return p.id != post.id;
+            });
+            _context3.next = 5;
+            return _axios.default.delete(BASE_URL + '/' + post.id);
+
+          case 5:
+            _context3.next = 10;
+            break;
+
+          case 7:
+            _context3.prev = 7;
+            _context3.t0 = _context3["catch"](1);
+            posts = fakePosts;
+
+          case 10:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 7]]);
+  }));
+
+  return function deletePost(_x) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
 createPost();
 createPost();
 createPost();
+getPosts();
+deletePost(post);
 getPosts();
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","axios":"node_modules/axios/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
