@@ -5317,6 +5317,19 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//accepts two functions of success and error, since we don't intercept for success -> null
+//interceptor is called before catch block
+_axios.default.interceptors.response.use(null, function (error) {
+  var expectedError = error.response && error.response.status >= 400 && error.response.status < 500;
+
+  if (!expectedError) {
+    console.log("Logging the error", error);
+    alert("An unexpected error occurred!");
+  }
+
+  return Promise.reject(error);
+});
+
 var BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 var getPosts = /*#__PURE__*/function () {
@@ -5413,10 +5426,7 @@ var deletePost = /*#__PURE__*/function () {
             if (_context3.t0.response && _context3.t0.response.status === 404) alert("this post has already been deleted"); //Unexpected
             //network down, server is down, db is down, bug
             //log them, display generic and friendly error msg
-            else {
-              console.log("logging error", _context3.t0);
-              alert("An unexpected error occurred");
-            } //either way expected or unexpected we need to revert the state
+            //either way expected or unexpected we need to revert the state
 
             posts = fakePosts;
 

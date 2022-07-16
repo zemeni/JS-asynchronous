@@ -63,16 +63,27 @@ console.log('first');*/
 //using axios
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
+
+//accepts two functions of success and error, since we don't intercept for success -> null
+//interceptor is called before catch block
+axios.interceptors.response.use(null, error => {
+    const expectedError = error.response && error.response.status >= 400 && error.response.status < 500;
+    if (!expectedError) {
+        console.log("Logging the error", error);
+        alert("An unexpected error occurred!");
+    }
+    return Promise.reject(error);
+});
 const BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-const getPosts = async function (){
+const getPosts = async function () {
     const {data} = await axios.get(`${BASE_URL}`);
     console.log(data[0]);
 }
 
 const post = {
-    title:'title',
-    body:'body'
+    title: 'title',
+    body: 'body'
 };
 
 const createPost = async () => {
@@ -86,21 +97,16 @@ const deletePost = async post => {
     try {
         posts.filter(p => p.id != post.id);
         await axios.delete(BASE_URL + '/' + post.id);
-    }catch (ex){
+    } catch (ex) {
         ex.request;
         ex.response;
         //Expected (404:Not found, 400: bad req) -Client errors
         //in this case, display specific error msg to error
-        if(ex.response && ex.response.status===404)
+        if (ex.response && ex.response.status === 404)
             alert("this post has already been deleted");
-        //Unexpected
-        //network down, server is down, db is down, bug
+            //Unexpected
+            //network down, server is down, db is down, bug
         //log them, display generic and friendly error msg
-        else {
-            console.log("logging error",ex);
-            alert("An unexpected error occurred");
-
-        }
         //either way expected or unexpected we need to revert the state
         posts = fakePosts;
     }
