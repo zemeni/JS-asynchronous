@@ -5400,15 +5400,27 @@ var deletePost = /*#__PURE__*/function () {
             return _axios.default.delete(BASE_URL + '/' + post.id);
 
           case 5:
-            _context3.next = 10;
+            _context3.next = 13;
             break;
 
           case 7:
             _context3.prev = 7;
             _context3.t0 = _context3["catch"](1);
+            _context3.t0.request;
+            _context3.t0.response; //Expected (404:Not found, 400: bad req) -Client errors
+            //in this case, display specific error msg to error
+
+            if (_context3.t0.response && _context3.t0.response.status === 404) alert("this post has already been deleted"); //Unexpected
+            //network down, server is down, db is down, bug
+            //log them, display generic and friendly error msg
+            else {
+              console.log("logging error", _context3.t0);
+              alert("An unexpected error occurred");
+            } //either way expected or unexpected we need to revert the state
+
             posts = fakePosts;
 
-          case 10:
+          case 13:
           case "end":
             return _context3.stop();
         }

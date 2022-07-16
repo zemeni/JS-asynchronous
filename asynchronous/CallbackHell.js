@@ -87,6 +87,21 @@ const deletePost = async post => {
         posts.filter(p => p.id != post.id);
         await axios.delete(BASE_URL + '/' + post.id);
     }catch (ex){
+        ex.request;
+        ex.response;
+        //Expected (404:Not found, 400: bad req) -Client errors
+        //in this case, display specific error msg to error
+        if(ex.response && ex.response.status===404)
+            alert("this post has already been deleted");
+        //Unexpected
+        //network down, server is down, db is down, bug
+        //log them, display generic and friendly error msg
+        else {
+            console.log("logging error",ex);
+            alert("An unexpected error occurred");
+
+        }
+        //either way expected or unexpected we need to revert the state
         posts = fakePosts;
     }
 }
